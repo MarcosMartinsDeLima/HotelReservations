@@ -23,6 +23,11 @@ export class FuncionarioService
         return await this.FuncionarioRepo.findOne({where:{"idAdmin": id}})
     }
 
+    async getFuncionarioByEmail(email: string): Promise<Funcionario>
+    {
+        return await this.FuncionarioRepo.findOne({where:{"email":email}})
+    }
+
     async create(Funcionario: FuncionarioCreateDto) : Promise<boolean>
     {
         try {

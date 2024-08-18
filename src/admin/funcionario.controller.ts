@@ -1,15 +1,23 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, forwardRef, Get, Inject, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { FuncionarioCreateDto } from './entities/funcionarioCreateDto';
 import { Response } from 'express';
 import { FuncionarioService } from './funcionario.service';
 import { Funcionario } from './entities/funcionarioentity';
 import { FuncionarioUpdateDto } from './entities/funcionarioUpdateDto';
+import { signInDto } from 'src/auth/entities/siginInDto';
+import { AuthService } from 'src/auth/auth.service';
+import { AuthGuard } from 'src/auth/authGuard';
 
 @Controller('funcionario')
 export class FuncionarioController 
 {
-    constructor(private readonly funcionarioService: FuncionarioService){}
+    constructor(
+        private readonly funcionarioService: FuncionarioService,
+        @Inject(forwardRef(()=> AuthService))
+        private readonly authService: AuthService
+    ){}
 
+    @UseGuards(AuthGuard)
     @Get()
      async getAll(@Res() resp: Response)
     {
@@ -39,7 +47,7 @@ export class FuncionarioController
         return resp.status(201).json(Funcionario);
         
     }
-
+    @UseGuards(AuthGuard)
     @Put("update")
     async updateFuncionario(@Res() resp: Response, @Body() funcionario: FuncionarioUpdateDto)
     {
@@ -48,7 +56,7 @@ export class FuncionarioController
 
         return resp.status(200).json(funcionarioNovo)
     }
-
+    @UseGuards(AuthGuard)
     @Delete("delete/:idAdmin")
     async deleteFuncionario(@Res() resp: Response,@Param() idAdmin: number)
     {
@@ -59,6 +67,16 @@ export class FuncionarioController
         if(deletedUser == false) return resp.status(400).json("Não foi possivel deletar o funcionario")
         
         return resp.status(205)
+    }
+
+    @Post("login")
+    async login(@Res() resp: Response,@Body() loginDto: signInDto )
+    {
+        const token = await this.authService.signIn(loginDto.email,loginDto.senha)
+        if(!token) return resp.status(404).json("Funcionario não encontrado!")
+        if(token.SenhaInvalida) return resp.status(401).json("Senha invalida!")
+        
+        return resp.status(200).json(token)
     }
 
 }
