@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FuncionarioModule } from './admin/funcionario.module';
 import { Funcionario } from './admin/entities/funcionarioentity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { Funcionario } from './admin/entities/funcionarioentity';
       entities:[Funcionario],
       synchronize:true
     }),
-    FuncionarioModule
+    FuncionarioModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
