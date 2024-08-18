@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("funcionario")
 export class Funcionario
@@ -16,5 +16,5 @@ export class Funcionario
     senha: string
 
     @Column()
-    cpf: string 
+    cpf: string
 }
