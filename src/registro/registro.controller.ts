@@ -1,9 +1,10 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
 import { RegistroService } from './registro.service';
 import { Response } from 'express';
 import { ConsumidorDto } from 'src/BaseEntities/consumidorDto';
 import { QuartoDto } from 'src/BaseEntities/quartoDto';
 import { RegistroDto } from './entities/registroDto';
+import { AuthGuard } from 'src/auth/authGuard';
 
 @Controller('registro')
 export class RegistroController 
@@ -12,6 +13,7 @@ export class RegistroController
         private readonly registroService: RegistroService
     ){}
 
+    @UseGuards(AuthGuard)
     @Post("create-consumer")
     async createConsumidor(@Res() resp: Response,@Body() consumidordto: ConsumidorDto)
     {
@@ -21,7 +23,7 @@ export class RegistroController
         return resp.status(201).json(consumidor);
     }
 
-
+    @UseGuards(AuthGuard)
     @Post("create-quarto")
     async createQuarto(@Res() resp: Response,@Body() quartoDto: QuartoDto)
     {
@@ -30,7 +32,8 @@ export class RegistroController
         const quarto = await this.registroService.CreateQuarto(quartoDto);
         return resp.status(201).json(quarto);
     }
-
+    
+    @UseGuards(AuthGuard)
     @Post('create-reserva')
     async createReserva(@Res() resp: Response,@Body() registroDto: RegistroDto)
     {
