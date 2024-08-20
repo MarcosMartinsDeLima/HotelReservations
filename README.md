@@ -9,7 +9,8 @@ Este projeto foi criado em Nestjs e typescript usando typeorm para uma API de re
 
 ` docker compose up `
 
-caso encontre algum problema relacionado a imagem do mysql
+*caso encontre algum problema relacionado a imagem do mysql:
+
 ` docker start mysql `
 
 ` docker exec -it mysql mysql -u root -p `
