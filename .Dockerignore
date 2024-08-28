@@ -1,5 +1,5 @@
-dockerfile
-.dockerignore
+Dockerfile
+.Dockerignore
 node_modules
 npm-debug.log
 dist

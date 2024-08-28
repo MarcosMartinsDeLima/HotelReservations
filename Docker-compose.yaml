@@ -19,7 +19,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     container_name: nest-docker
     ports:
       - '3000:3000'
